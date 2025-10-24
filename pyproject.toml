@@ -1,5 +1,5 @@
 [project]
-name = "template-mizu-django"
+name = "b3tt3r-lyfe"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -10,6 +10,7 @@ dependencies = [
     "django-compressor>=4.5.1",
     "pillow>=11.3.0",
     "psycopg2-binary>=2.9.10",
+    "dotenv>=0.9.9",
 ]
 
 

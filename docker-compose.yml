@@ -1,6 +1,6 @@
 services:
   app:
-    container_name: template-mizu-django
+    container_name: better-lyfe
     build:
       context: .
       dockerfile: ./dockerfile
@@ -15,9 +15,9 @@ services:
     depends_on:
       - database
     networks:
-      - template_network
+      - app_network
   database:
-    container_name: template-mizu-django-database
+    container_name: better-lyfe-database
     image: postgres:14-alpine
     volumes:
       - ./data/postgres/data:/var/lib/postgresql/data/
@@ -26,7 +26,7 @@ services:
     ports:
       - 5432:5432
     networks:
-      - template_network
+      - app_network
 networks:
-  template_network:
+  app_network:
     driver: bridge
