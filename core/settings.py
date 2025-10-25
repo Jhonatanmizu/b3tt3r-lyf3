@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import os
 from pathlib import Path
+
 from dotenv import load_dotenv
 
 # ─── Paths ───────────────────────────────────────────────────────────
@@ -34,7 +35,7 @@ DEBUG = bool(int(os.getenv("DEBUG", "0")))
 
 ALLOWED_HOSTS: list[str] = [
     h.strip() for h in os.getenv("ALLOWED_HOSTS", "").split(",") if h.strip()
-] or ["127.0.0.1", "localhost","0.0.0.0"]
+] or ["127.0.0.1", "localhost", "0.0.0.0"]
 
 # ─── Applications ────────────────────────────────────────────────────
 DJANGO_APPS = [
@@ -50,17 +51,14 @@ THIRD_PARTY_APPS = [
     "compressor",
 ]
 
-LOCAL_APPS = [
-    # "apps.users",
-    # "apps.api",
-]
+LOCAL_APPS = ["users"]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 # ─── Middleware ──────────────────────────────────────────────────────
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    "django.middleware.gzip.GZipMiddleware",  
+    "django.middleware.gzip.GZipMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -106,7 +104,9 @@ DATABASES = {
 
 # ─── Password Validation ─────────────────────────────────────────────
 AUTH_PASSWORD_VALIDATORS = [
-    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
+    {
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
+    },
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
     {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
@@ -163,3 +163,5 @@ LOGGING = {
     },
 }
 
+
+AUTH_USER_MODEL = "users.CustomUser"
