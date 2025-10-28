@@ -51,7 +51,7 @@ THIRD_PARTY_APPS = [
     "compressor",
 ]
 
-LOCAL_APPS = ["users"]
+LOCAL_APPS = ["users", "productivity", "lyfe_tracker", "gamification"]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
