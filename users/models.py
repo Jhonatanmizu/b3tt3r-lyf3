@@ -27,7 +27,8 @@ class CustomUser(AbstractUser, BaseModel):
     timezone = models.CharField(max_length=64, default="UTC")
     xp = models.PositiveIntegerField(default=0)
     level = models.PositiveIntegerField(default=1)
-    objects: models.Manager["CustomUser"] = SoftDeleteManager()  # type: ignore
+    objects: models.Manager["CustomUser"] = models.Manager()  # type: ignore
+    soft_deleted_objects: models.Manager["CustomUser"] = SoftDeleteManager()  # type: ignore
 
     def add_xp(self, amount):
         """Add XP and handle level-up logic."""
