@@ -48,7 +48,7 @@ class UserModelTestCase(TestCase):
         user_id = user.id
         user.delete()
         with self.assertRaises(CustomUser.DoesNotExist):
-            CustomUser.objects.get(id=user_id)
+            CustomUser.soft_deleted_objects.get(id=user_id)
 
     def test_restore_method(self):
         user = CustomUser.objects.create(
@@ -59,6 +59,6 @@ class UserModelTestCase(TestCase):
         )
         user_id = user.id
         user.delete()
-        restored_user = CustomUser.all_objects.filter(is_deleted=True).get(id=user_id)
+        restored_user = CustomUser.objects.filter(is_deleted=True).get(id=user_id)
         restored_user.restore()
-        self.assertIsNotNone(CustomUser.objects.get(id=user_id))
+        self.assertIsNotNone(CustomUser.soft_deleted_objects.get(id=user_id))
