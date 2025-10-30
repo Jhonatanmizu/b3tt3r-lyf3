@@ -11,6 +11,10 @@ dependencies = [
     "pillow>=11.3.0",
     "psycopg2-binary>=2.9.10",
     "dotenv>=0.9.9",
+    "djangorestframework>=3.16.1",
+    "markdown>=3.9",
+    "django-filter>=25.2",
+    "djangorestframework-simplejwt>=5.5.1",
 ]
 
 
