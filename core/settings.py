@@ -49,11 +49,21 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = [
     "compressor",
+    "rest_framework",
+    "rest_framework_simplejwt",
 ]
 
-LOCAL_APPS = ["users", "productivity", "lyfe_tracker", "gamification"]
+LOCAL_APPS = ["users", "productivity", "lyfe_tracker", "gamification", "authentication"]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    )
+}
+
 
 # ─── Middleware ──────────────────────────────────────────────────────
 MIDDLEWARE = [
