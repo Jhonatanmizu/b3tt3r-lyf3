@@ -1,11 +1,9 @@
-from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated
-
 from authentication.serializers.user_serializer import CustomUserSerializer
+from core.views.authenticated_views import AuthenticatedRetrieveUpdateDestroyAPIView
 from users.models import CustomUser
 
 
-class UserRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
+class UserRetrieveUpdateDestroy(AuthenticatedRetrieveUpdateDestroyAPIView):
     """
     View to retrieve, update, or delete a specific user by primary key.
 
@@ -16,4 +14,3 @@ class UserRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
 
     queryset = CustomUser.soft_deleted_objects.all()
     serializer_class = CustomUserSerializer
-    permission_classes = [IsAuthenticated]
