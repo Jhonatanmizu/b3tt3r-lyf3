@@ -30,7 +30,7 @@ class CustomUser(AbstractUser, BaseModel):
     objects: models.Manager["CustomUser"] = models.Manager()  # type: ignore
     soft_deleted_objects: models.Manager["CustomUser"] = SoftDeleteManager()  # type: ignore
 
-    def add_xp(self, amount):
+    def add_xp(self, amount: int) -> None:
         """Add XP and handle level-up logic."""
         self.xp += amount
         while self.xp >= self.level * 100:

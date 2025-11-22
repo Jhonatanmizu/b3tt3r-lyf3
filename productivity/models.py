@@ -1,3 +1,4 @@
+from datetime import date
 from decimal import Decimal
 
 from django.conf import settings
@@ -22,7 +23,7 @@ class Tag(BaseModel):
     name = models.CharField(max_length=50, unique=True)
     color = models.CharField(max_length=20, default="#3b82f6")
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
 
@@ -31,7 +32,7 @@ class Goal(BaseModel):
     Long-term objective that can group related Tasks and Habits.
     """
 
-    STATUS_CHOICES = [
+    STATUS_CHOICES: list[tuple[str, str]] = [
         ("active", "Active"),
         ("paused", "Paused"),
         ("completed", "Completed"),
@@ -52,20 +53,20 @@ class Goal(BaseModel):
     target_date = models.DateField(null=True, blank=True)
     completion_xp_reward = models.PositiveIntegerField(default=50)
 
-    def mark_completed(self):
+    def mark_completed(self) -> None:
         """Sets the goal to completed and awards a large XP bonus."""
         if self.status != "completed":
             self.status = "completed"
             self.save()
             self.user.add_xp(self.completion_xp_reward)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"Goal: {self.name} ({self.status})"
 
     class Meta(BaseModel.Meta):
         verbose_name = "Goal"
         verbose_name_plural = "Goals"
-        ordering = ["target_date"]
+        ordering: list[str] = ["target_date"]
 
 
 class Task(BaseModel):
@@ -99,14 +100,14 @@ class Task(BaseModel):
         related_name="related_tasks",
     )
 
-    def mark_done(self):
+    def mark_done(self) -> None:
         """Marks task as done and awards XP."""
         if self.status != "done":
             self.status = "done"
             self.save()
             self.user.add_xp(10)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.title} ({self.status})"
 
 
@@ -141,14 +142,13 @@ class Habit(BaseModel):
         related_name="related_habits",
     )
 
-    def complete(self, date=None):
+    def complete(self, date: date | None = None) -> None:
         """Mark habit as complete for a given day and update streak."""
         if date is None:
             date = timezone.localdate()
 
         if self.last_completed:
             delta = date - self.last_completed
-            # Simple streak logic: only continue if completed yesterday
             if delta.days == 1:
                 self.streak += 1
             elif delta.days > 1:
@@ -160,7 +160,7 @@ class Habit(BaseModel):
         self.save()
         self.user.add_xp(5)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.name} (Streak: {self.streak})"
 
 
@@ -194,16 +194,13 @@ class JournalEntry(BaseModel):
 
     tags = models.ManyToManyField(Tag, blank=True)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"Journal on {self.entry_date} by {self.user.username}"
 
     class Meta(BaseModel.Meta):
         verbose_name = "Journal Entry"
         verbose_name_plural = "Journal Entries"
         unique_together = ("user", "entry_date")
-        ordering = ["-entry_date"]
-        ordering = ["-entry_date"]
-        ordering = ["-entry_date"]
         ordering = ["-entry_date"]
 
 
@@ -246,6 +243,6 @@ class HabitEntry(BaseModel):
         verbose_name = "Habit Log Entry"
         verbose_name_plural = "Habit Log Entries"
 
-    def __str__(self):
+    def __str__(self) -> str:
         status = "Completed" if self.completed else "Missed"
         return f"[{self.date}] {self.habit.name}: {status}"
