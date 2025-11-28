@@ -12,5 +12,5 @@ class UserRetrieveUpdateDestroy(AuthenticatedRetrieveUpdateDestroyAPIView):
     (or the user themselves for update/retrieve).
     """
 
-    queryset = CustomUser.soft_deleted_objects.all()
+    queryset = CustomUser.all_objects.all()
     serializer_class = CustomUserSerializer

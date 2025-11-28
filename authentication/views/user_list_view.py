@@ -13,6 +13,6 @@ class UserListCreate(AuthenticatedListCreateAPIView):
     * Only admin users are able to access this view.
     """
 
-    queryset = CustomUser.soft_deleted_objects.all()
+    queryset = CustomUser.all_objects.all()
     serializer_class = CustomUserSerializer
     permission_classes = [IsAuthenticated]

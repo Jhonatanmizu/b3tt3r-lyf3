@@ -1,7 +1,12 @@
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, UserManager
 from django.db import models
 
 from core.models.base import BaseModel, SoftDeleteManager
+
+
+class CustomUserManager(UserManager):
+    def get_queryset(self):
+        return super().get_queryset().filter(is_deleted=False)
 
 
 class Profile(BaseModel):
@@ -27,8 +32,9 @@ class CustomUser(AbstractUser, BaseModel):
     timezone = models.CharField(max_length=64, default="UTC")
     xp = models.PositiveIntegerField(default=0)
     level = models.PositiveIntegerField(default=1)
-    objects: models.Manager["CustomUser"] = models.Manager()  # type: ignore
-    soft_deleted_objects: models.Manager["CustomUser"] = SoftDeleteManager()  # type: ignore
+
+    objects = CustomUserManager()
+    all_objects: models.Manager["CustomUser"] = models.Manager()
 
     def add_xp(self, amount: int) -> None:
         """Add XP and handle level-up logic."""
