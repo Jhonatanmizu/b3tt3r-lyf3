@@ -1,4 +1,4 @@
-DOCKER_COMPOSE = sudo docker-compose
+DOCKER_COMPOSE = sudo docker compose
 
 build:
 	$(DOCKER_COMPOSE) build
@@ -13,13 +13,13 @@ logs:
 	$(DOCKER_COMPOSE) logs -f
 
 shell:
-	$(DOCKER_COMPOSE) exec web uv run python manage.py shell
+	$(DOCKER_COMPOSE) exec app uv run python manage.py shell
 
 migrate:
-	$(DOCKER_COMPOSE) exec web uv run python manage.py migrate
+	$(DOCKER_COMPOSE) exec app uv run python manage.py migrate
 
 createsuperuser:
-	$(DOCKER_COMPOSE) exec web uv run python manage.py createsuperuser
+	$(DOCKER_COMPOSE) exec app uv run python manage.py createsuperuser
 
 test:
-	$(DOCKER_COMPOSE) exec web uv run python manage.py test
+	$(DOCKER_COMPOSE) exec app uv run python manage.py test
