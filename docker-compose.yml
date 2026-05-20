@@ -12,6 +12,8 @@ services:
       - ./data/web/media:/data/web/media
     env_file:
       - ./dotenv_files/.env
+    environment:
+      - POSTGRES_HOST=database
     depends_on:
       - database
     networks:

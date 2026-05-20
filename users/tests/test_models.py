@@ -4,7 +4,7 @@ from users.models import CustomUser
 
 
 class UserModelTestCase(TestCase):
-    def test_user_creation(self):
+    def test_user_creation(self) -> None:
         user: CustomUser = CustomUser.objects.create(
             username="testuser",
             first_name="Test",
@@ -17,7 +17,7 @@ class UserModelTestCase(TestCase):
         self.assertEqual(user.xp, 0)
         self.assertEqual(user.level, 1)
 
-    def test_add_xp_and_level_up(self):
+    def test_add_xp_and_level_up(self) -> None:
         user = CustomUser.objects.create(
             username="levelupuser",
             first_name="Level",

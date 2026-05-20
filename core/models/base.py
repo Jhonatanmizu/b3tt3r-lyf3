@@ -1,9 +1,11 @@
 from __future__ import annotations
 
-from typing import Optional
 import uuid
+from typing import Optional
+
 from django.db import models
 from django.utils import timezone
+
 
 # ---------- Manager ----------
 class SoftDeleteManager(models.Manager["BaseModel"]):
@@ -21,6 +23,7 @@ class BaseModel(models.Model):
       - is_active flag
       - soft delete (is_deleted, deleted_at)
     """
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -54,7 +57,7 @@ class BaseModel(models.Model):
         self.save(update_fields=["is_deleted", "deleted_at"])
 
     class Meta:
-        abstract = True 
+        abstract = True
 
     def __str__(self) -> str:
         return f"{self.__class__.__name__}(id={self.pk})"
