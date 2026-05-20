@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.db import models
 
 from core.models.base import BaseModel
@@ -13,11 +15,11 @@ class Reward(BaseModel):
         verbose_name = "Reward"
         verbose_name_plural = "Rewards"
 
-    TYPE_CHOICES = [
+    TYPE_CHOICES: tuple[tuple[str, str], ...] = (
         ("item", "In-Game Item"),
         ("privilege", "Real-Life Privilege"),
         ("cosmetic", "Cosmetic/Skin"),
-    ]
+    )
 
     name = models.CharField(max_length=255, unique=True)
     description = models.TextField()
@@ -26,7 +28,7 @@ class Reward(BaseModel):
     )
     reward_type = models.CharField(max_length=20, choices=TYPE_CHOICES, default="item")
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"Reward: {self.name} (Cost: {self.cost_xp} XP)"
 
 
@@ -47,16 +49,16 @@ class UserReward(BaseModel):
 
     is_used = models.BooleanField(default=False)
 
-    def use(self):
+    def use(self) -> None:
         """Marks a consumable reward as used."""
         if not self.is_used:
             self.is_used = True
             self.save()
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.user.username} - {self.reward.name}"
 
-    def purchased_at(self):
+    def purchased_at(self) -> datetime:
         """Returns the timestamp when the reward was purchased."""
         return self.created_at
 
@@ -78,7 +80,7 @@ class Badge(BaseModel):
         help_text="The minimum total XP required to be eligible for this badge."
     )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
 
@@ -98,9 +100,9 @@ class UserBadge(BaseModel):
         verbose_name_plural = "User Badges"
         unique_together = ("user", "badge")
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.user.username} - {self.badge.name}"
 
-    def awarded_at(self):
+    def awarded_at(self) -> datetime:
         """Returns the timestamp when the badge was awarded."""
         return self.created_at
