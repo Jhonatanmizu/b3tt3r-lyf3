@@ -1,4 +1,5 @@
 from rest_framework import serializers
+
 from users.models import CustomUser
 
 
@@ -21,7 +22,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
         )
         read_only_fields = ("id", "date_joined")
 
-    def create(self, validated_data):
+    def create(self, validated_data) -> CustomUser:
         password = validated_data.pop("password")
         user = CustomUser(**validated_data)
         user.set_password(password)

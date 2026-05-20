@@ -1,6 +1,7 @@
 from django.urls import path
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
+from authentication.views.register_view import RegisterView
 from authentication.views.user_data_view import UserDataView
 from authentication.views.user_detail_view import UserRetrieveUpdateDestroy
 from authentication.views.user_list_view import UserListCreate
@@ -11,6 +12,7 @@ app_name = "auth"
 urlpatterns = [
     path("token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    path("register/", RegisterView.as_view(), name="register"),
     path("users/", UserListCreate.as_view(), name="user-list"),
     path("users/me/", UserDataView.as_view(), name="user-data"),
     path("users/<str:pk>", UserRetrieveUpdateDestroy.as_view(), name="user-detail"),
