@@ -23,3 +23,6 @@ createsuperuser:
 
 test:
 	$(DOCKER_COMPOSE) exec app uv run python manage.py test
+
+dev:
+	$(DOCKER_COMPOSE) exec app uv run python manage.py runserver && npm run dev:css
