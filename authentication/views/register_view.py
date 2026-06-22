@@ -1,5 +1,6 @@
 from typing import ClassVar
 
+from drf_spectacular.utils import extend_schema
 from rest_framework import generics, status
 from rest_framework.permissions import AllowAny
 from rest_framework.request import Request
@@ -8,6 +9,16 @@ from rest_framework.response import Response
 from authentication.serializers.user_serializer import CustomUserSerializer
 
 
+@extend_schema(
+    tags=["Authentication"],
+    summary="Register",
+    description="Create a new user account.",
+    request=CustomUserSerializer,
+    responses={
+        201: CustomUserSerializer,
+        400: {"description": "Validation error"},
+    },
+)
 class RegisterView(generics.CreateAPIView):
     serializer_class = CustomUserSerializer
     permission_classes: ClassVar[list[AllowAny]] = [AllowAny]

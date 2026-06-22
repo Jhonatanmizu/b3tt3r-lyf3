@@ -8,6 +8,7 @@ Enhanced for multi-environment use and production safety.
 from __future__ import annotations
 
 import os
+from datetime import timedelta
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -51,9 +52,19 @@ THIRD_PARTY_APPS = [
     "compressor",
     "rest_framework",
     "rest_framework_simplejwt",
+    "rest_framework_simplejwt.token_blacklist",
+    "drf_spectacular",
+    "drf_spectacular_sidecar",
 ]
 
-LOCAL_APPS = ["users", "productivity", "lyfe_tracker", "gamification", "authentication"]
+LOCAL_APPS = [
+    "landing",
+    "users",
+    "productivity",
+    "lyfe_tracker",
+    "gamification",
+    "authentication",
+]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
@@ -61,9 +72,63 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
-    )
+    ),
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
+# ─── SimpleJWT ───────────────────────────────────────────────────────
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
+    "ROTATE_REFRESH_TOKENS": False,
+    "BLACKLIST_AFTER_ROTATION": True,
+}
+
+# ─── Spectacular / Swagger ───────────────────────────────────────────
+SPECTACULAR_SETTINGS = {
+    "TITLE": "B3tt3r Lyf3 API",
+    "DESCRIPTION": "API documentation for the B3tt3r Lyf3 application.",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+    "SWAGGER_UI_DIST": "SIDECAR",
+    "SWAGGER_UI_FAVICON_HREF": "SIDECAR",
+    "REDOC_DIST": "SIDECAR",
+    "COMPONENT_SPLIT_REQUEST": True,
+    "SECURITY": [{"BearerAuth": []}],
+    "APPEND_COMPONENTS": {
+        "securitySchemes": {
+            "BearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT",
+            }
+        }
+    },
+}
+
+# ─── Resend / Email Configuration ────────────────────────────────────
+RESEND_API_KEY = os.getenv("RESEND_API_KEY", "")
+EMAIL_FROM = os.getenv("EMAIL_FROM", "")
+CONTACT_EMAIL = os.getenv("CONTACT_EMAIL", "")
+RESEND_WEBHOOK_SECRET = os.getenv("RESEND_WEBHOOK_SECRET", "")
+RESEND_AUDIENCE_ID = os.getenv("RESEND_AUDIENCE_ID", "")
+RESEND_TEMPLATE_ID = os.getenv("RESEND_TEMPLATE_ID", "")
+RESEND_PASSWORD_RESET_TEMPLATE_ID = os.getenv(
+    "RESEND_PASSWORD_RESET_TEMPLATE_ID", RESEND_TEMPLATE_ID
+)
+
+if DEBUG and not RESEND_API_KEY:
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+else:
+    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+    EMAIL_HOST = "smtp.resend.com"
+    EMAIL_PORT = 587
+    EMAIL_USE_TLS = True
+    EMAIL_HOST_USER = "resend"
+    EMAIL_HOST_PASSWORD = RESEND_API_KEY
+    DEFAULT_FROM_EMAIL = EMAIL_FROM or "noreply@example.com"
+
+FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:3000")
 
 # ─── Middleware ──────────────────────────────────────────────────────
 MIDDLEWARE = [
